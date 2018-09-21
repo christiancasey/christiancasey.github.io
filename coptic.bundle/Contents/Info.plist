@@ -2,22 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
-	<key>CFBundleExecutable</key>
-	<string></string>
 	<key>CFBundleIdentifier</key>
 	<string>com.apple.keyboardlayout.copticegyptian</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>1.0</string>
+	<key>CFBundleName</key>
+	<string>coptic</string>
 	<key>CFBundleVersion</key>
 	<string>0.8</string>
-	<key>KLInfo_Coptic</key>
-	<dict>
-		<key>TISInputSourceID</key>
-		<string>com.apple.keyboardlayout.copticegyptian.coptic</string>
-		<key>TISIntendedLanguage</key>
-		<string></string>
-	</dict>
 </dict>
 </plist>
