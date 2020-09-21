@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Book Colors</title>
+		<style>
+			@font-face { 
+				font-family: 'Garamond'; 
+				src: url('/Users/christiancasey/Library/Fonts/Garamond Premr Pro.otf'); 
+			}
+			body {
+				font-family: "Garamond", Helvetica, sans-serif;
+				font-size: 16pt;
+				width: 100vw;
+				height: 100vh;
+			}
+			#text_input {
+				border: 1px solid gray;
+				padding: 8px;
+				font-family: "Garamond", Helvetica, sans-serif;
+				font-size: 16pt;
+			}
+			.input {
+				float: left;
+				width: 40vw;
+			}
+			.footer {
+				float: left;
+			}
+			#text_output {
+				float: left;
+				padding: 8px;
+				width: 50vw;
+				background-color: gray;
+			}
+			textarea {
+				width: 90%;
+			}
+		</style>
+	</head>
+	<body>
+		
+		
+		<div class="input">
+			<form>
+				<textarea id="text_input" rows="10" placeholder="Enter text here..." onchange="procText()"></textarea>
+			</form>
+			<div class="footer">
+				<button onclick="procText()">Run→</button>
+			</div>
+		</div>
+		<div id="text_output">Test output...</div>
+		
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script type="text/javascript" src="colors.js"></script>
+		
+		<script type="text/javascript">
+			
+			var vColorTerms = Object.keys(vColors);
+			
+			var sText;
+			var sSearch = "";
+			var iSearch = [];
+			var vMatches = [];
+			
+			function procText() {
+				sText = document.getElementById("text_input").value;
+				
+				sSearch = ' ' + sText.toLowerCase() + ' ';
+				iSearch = [];
+				vMatches = [];
+				
+				const reNonLetter = /[^\w \.\;\,\:\"\']/g;
+				sSearch = sSearch.replace(reNonLetter, ' ');
+				const reMultiSpace = / {2,}/g;
+				sSearch = sSearch.replaceAll(reMultiSpace, ' ');
+				const rePunct = /[\.\;\,\:\"\']/g;
+				sSearch = sSearch.replace(rePunct, '-');
+				
+				
+				for(let i = 0; i < vColorTerms.length; i++){
+					iLen = vColorTerms[i].length;
+					iMatch = sSearch.search(' ' + vColorTerms[i] + ' ');
+					while(iMatch >= 0) {
+						vMatches.push([iMatch, vColorTerms[i], vColors[vColorTerms[i]]]);
+						sSearch = sSearch.slice(0,iMatch) + Array(iLen+2).fill('•').join('') + sSearch.slice(iMatch+iLen);
+						iMatch = sSearch.search(' ' + vColorTerms[i] + ' ');
+					}
+				}
+				
+				vMatches.sort(compareFirstColumn);
+				sOutput = "";
+				for(let i = 0; i < vMatches.length; i++) {
+					sColorName = vMatches[i][1];
+					sColorName = sColorName.replace('colored','');
+					sColorName = sColorName.replace('color of','');
+					sOutput += ' <span style="color: ' + vMatches[i][2] + ';">' + sColorName.trim() + '</span>';
+				}
+				
+				// sText = sText.replace(/\n/gi, "\n<br />\n");
+				document.getElementById("text_output").innerHTML = sOutput;
+			}
+			
+			function compareFirstColumn(a, b) {
+				if (a[0] === b[0]) {
+					return 0;
+				}
+				else {
+					return (a[0] < b[0]) ? -1 : 1;
+				}
+			}
+		</script>
+	
+	</body>
+</html>
